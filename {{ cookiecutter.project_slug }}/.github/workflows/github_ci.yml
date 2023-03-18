@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint and test
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Set up environment
+        run: make ci_env_setup
+      - name: Run linting checks
+        run: make ci_lint
+      - name: Run automated tests
+        run: make ci_test
+
