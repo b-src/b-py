@@ -18,7 +18,6 @@ for a more in-depth breakdown of why certain choices were made, see here[https:/
  - poetry for dependency management
  - a CLI for project tasks built with make
  - a CI pipeline configuration for github actions that:
-   + TODO: static analysis/security/credential/depencency vulnerability checks?
    + runs formatting and linting checks
    + runs the automated test suite
    + builds the app container
@@ -77,6 +76,10 @@ this template represents the way I like to develop. changes will only be merged 
  - consider adding version management with bump2version
  - pin version of poetry within the project, refactor poetry commands to use project specific poetry instead of system poetry
  - update dockerfile to make testing easier
+ - improve CI pipeline
+   + add static analysis/credential/dependency vulnerability scan
+   + make environment setup modular so jobs can be broken up without having to run expensive setup multiple times
+   + longer term - support automated deployment
 
 ## License
 
