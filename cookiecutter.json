@@ -1,0 +1,9 @@
+{
+	"python_version": "3.11.2",
+	"author": "",
+	"author_email": "",
+	"project_name": "",
+	"project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+	"project_description": "",
+	"version": "",
+}
