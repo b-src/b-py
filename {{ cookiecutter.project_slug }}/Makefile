@@ -90,13 +90,14 @@ clean:
 
 ##@ Docker Targets
 
+# TODO: properly tag
 docker_build: ## build the production docker container
 docker_build:
-	exit 1
+	docker build --target production .
 
 docker_test: ## run tests in docker
 docker_test:
-	exit 1
+	docker build --target tests .
 
 
 ##@ Run Targets
