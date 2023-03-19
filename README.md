@@ -12,11 +12,12 @@ for a more in-depth breakdown of why certain choices were made, see here[https:/
 ## Features
 
  - containerized application
+ - tools chosen with compatibility with pyproject.toml in mind
+ - a CLI for project tasks built with make
+ - poetry for dependency management
  - auto-formatting with black
  - linting with flakeheaven (a pyproject.toml-compatible fork of flake8)
  - type hint checking with mypy
- - poetry for dependency management
- - a CLI for project tasks built with make
  - a CI pipeline configuration for github actions that:
    + runs formatting and linting checks
    + runs the automated test suite
