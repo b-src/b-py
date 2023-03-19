@@ -81,10 +81,22 @@ set_up_local_environment: create_venv link_pyright_to_venv
 	
 
 ##@ Clean Targets
+
 clean: ## Clear existing test reports
 clean:
 	@rm -rf $(TEST_OUTPUT_DIR)
 	@mkdir $(TEST_OUTPUT_DIR)
+
+
+##@ Docker Targets
+
+docker_build: ## build the production docker container
+docker_build:
+	exit 1
+
+docker_test: ## run tests in docker
+docker_test:
+	exit 1
 
 
 ##@ Run Targets
@@ -217,7 +229,6 @@ ci_test: test
 
 
 .PHONY: help \
-	clean \
 	pyenv \
 	pyenv_virtualenv \
 	pyenv_pyright \
@@ -225,6 +236,9 @@ ci_test: test
 	create_venv \
 	link_pyright_to_venv \
 	set_up_local_environment \
+	clean \
+	docker_build \
+	docker_test \
 	run \
 	black \
 	black_check_only \

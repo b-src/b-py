@@ -16,6 +16,7 @@ WORKDIR /home/appuser/app
 
 FROM base as build
 
+# TODO: make poetry version configurable in template
 ENV POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_CREATE=false \
     POETRY_VERSION=1.2.1
@@ -24,10 +25,24 @@ RUN pip install "poetry==$POETRY_VERSION"
 
 COPY pyproject.toml poetry.lock README.md LICENSE.txt ./
 
-RUN python3 -m poetry export --without dev -f requirements.txt -o requirements.txt
+RUN python3 -m poetry export --without dev -f requirements.txt -o requirements.txt && \
+    python3 -m poetry export -f requirements.txt -o dev_requirements.txt
 
 
-FROM base
+FROM base as test
+
+COPY --from=build /home/appuser/app/dev_requirements.txt .
+
+RUN pip install --force-reinstall -r devrequirements.txt
+
+COPY Makefile Makefile
+COPY {{ cookiecutter.project_slug }} {{ cookiecutter.project_slug }}
+COPY tests tests
+
+CMD ["make", "test"]
+
+
+FROM base as production
 
 COPY --from=build /home/appuser/app/requirements.txt .
 
