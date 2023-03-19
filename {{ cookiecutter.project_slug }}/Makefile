@@ -70,6 +70,16 @@ install_python: $(PYENV_VERSION_PATH)
 create_venv: ## Create venv with pyenv-virutalenv in the CI environment
 create_venv: .python-version
 
+pyrightconfig.json: pyenv_pyright
+	pyenv pyright $(PYTHON_VERSION)
+
+link_pyright_to_venv: ## Create pyrightconfig.json linking pyright to the venv
+link_pyright_to_venv: pyrightconfig.json
+
+set_up_local_environment: ## Fully set up the local environment
+set_up_local_environment: create_venv link_pyright_to_venv
+	
+
 ##@ Clean Targets
 clean: ## Clear existing test reports
 clean:
@@ -80,12 +90,14 @@ clean:
 ##@ Run Targets
 
 run: ## Run the project
-run:
+run: set_up_local_environment
 	$(POETRY) run python {{ cookiecutter.project_slug }}/main.py
 
 
 ##@ Test Targets
 
+# TODO: add set_up_local_environment as a dependency after that won't break CI
+test: ## Run automated tests
 test: clean
 	$(POETRY) run pytest
 
@@ -93,17 +105,20 @@ test: clean
 ##@ Linting Targets
 
 black: ## Auto-format code with black
-black:
+black: set_up_local_environment
 	$(POETRY) run black .
 
 black_check_only: ## Used by CI. Check if auto-formatter would make changes and fail if so
 black_check_only:
 	$(POETRY) run black --check .
 
+# TODO: add set_up_local_environment as a dependency after that won't break CI
 flake: ## Run the flakeheaven linter, which is a pyproject.toml compatible wrapper for flake8
 flake:
 	$(POETRY) run flakeheaven lint
 
+# TODO: add set_up_local_environment as a dependency after that won't break CI
+mypy: ## Check type hints with mypy
 mypy:
 	$(POETRY) run mypy .
 
@@ -167,7 +182,7 @@ ci_install_python: ci_pyenv_virtualenv $(CI_PYENV_VERSION_PATH)
 # This avoids interfering with the local environment .python-version recipe.
 # It's fine for now because we know this will only be called once during CI env setup.
 ci_create_venv: ## Create venv with pyenv-virutalenv in the CI environment
-ci_create_venv: install_python 
+ci_create_venv: ci_install_python 
 	$(CI_PYENV_VENV_SETUP_MACRO) && \
 	export PYENV_VERSION=$(PYTHON_VERSION) && \
 	pyenv virtualenv $(PYTHON_VERSION) $(VENV_NAME) && \
@@ -187,7 +202,7 @@ ci_install_poetry: ## Install poetry in the CI environment
 ci_install_poetry: $(CI_POETRY_BIN)
 
 ci_env_setup: ## Install pyenv, python version, and poetry
-ci_env_setup: create_venv install_poetry
+ci_env_setup: ci_create_venv ci_install_poetry
 	$(POETRY_PATH_MACRO) && \
 	$(VENV_ACTIVATE_MACRO) && \
 	poetry install --with dev
@@ -208,6 +223,8 @@ ci_test: test
 	pyenv_pyright \
 	install_python \
 	create_venv \
+	link_pyright_to_venv \
+	set_up_local_environment \
 	run \
 	black \
 	black_check_only \
