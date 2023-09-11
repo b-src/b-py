@@ -5,5 +5,5 @@
 	"project_name": "",
 	"project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
 	"project_description": "",
-	"version": "",
+	"version": ""
 }
