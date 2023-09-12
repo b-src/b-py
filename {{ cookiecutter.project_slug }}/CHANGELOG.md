@@ -1,4 +1,4 @@
-# Changelog - {{ cookiecutter.project_name }} v{{ cookiecutter.version }} 
+# Changelog - {{ cookiecutter.project_name }} v{{ cookiecutter.project_version }} 
 
 
 ## [Unreleased]

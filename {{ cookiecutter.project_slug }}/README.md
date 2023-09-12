@@ -1,4 +1,4 @@
-# {{ cookiecutter.project_name }} - v{{ cookiecutter.version }}
+# {{ cookiecutter.project_name }} - v{{ cookiecutter.project_version }}
 
 ## Features
 
