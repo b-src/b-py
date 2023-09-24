@@ -70,11 +70,11 @@ install_python: pyenv pyenv_virtualenv $(PYENV_VERSION_PATH)
 create_venv: ## Create venv with pyenv-virutalenv in the CI environment
 create_venv: .python-version
 
-pyrightconfig.json: pyenv_pyright
+pyrightconfig.json:
 	pyenv pyright $(PYTHON_VERSION)
 
 link_pyright_to_venv: ## Create pyrightconfig.json linking pyright to the venv
-link_pyright_to_venv: pyrightconfig.json
+link_pyright_to_venv: pyenv_pyright pyrightconfig.json
 
 set_up_local_environment: ## Fully set up the local environment
 set_up_local_environment: create_venv link_pyright_to_venv
