@@ -178,7 +178,7 @@ lint_check_only: black_check_only flake mypy
 .PHONY: bump
 bump: ## Bump version using bump2version
 bump: set_up_local_environment
-	@read -n 1 -p "Major [M], minor [m], or patch [p]? [M/m/p]" part && \
+	@read -n 1 -p "Major [M], minor [m], or patch [p]? [M/m/p] " part && \
 		case $${part} in \
 			M ) \
 				$(POETRY) run bump2version major \
