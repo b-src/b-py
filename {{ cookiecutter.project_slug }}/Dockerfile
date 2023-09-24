@@ -1,4 +1,4 @@
-FROM python:{{ cookiecutter.python_version }}-slim-buster as base
+FROM python:{{ cookiecutter.python_version }}-slim-bullseye as base
 
 RUN apt-get update && \
     apt-get -y upgrade && \
@@ -33,7 +33,7 @@ FROM base as test
 
 COPY --from=build /home/appuser/app/dev_requirements.txt .
 
-RUN pip install --force-reinstall -r devrequirements.txt
+RUN pip install --force-reinstall -r dev_requirements.txt
 
 COPY Makefile Makefile
 COPY {{ cookiecutter.project_slug }} {{ cookiecutter.project_slug }}
