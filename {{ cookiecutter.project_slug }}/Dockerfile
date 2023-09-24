@@ -1,4 +1,4 @@
-FROM python:{{ cookiecutter.python_version }}-slim-bullseye as base
+FROM python:{{ cookiecutter.python_version }}-slim-bookworm as base
 
 RUN apt-get update && \
     apt-get -y upgrade && \
