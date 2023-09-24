@@ -21,7 +21,7 @@ ENV POETRY_NO_INTERACTION=1 \
     POETRY_VIRTUALENVS_CREATE=false \
     POETRY_VERSION=1.6.1
 
-RUN pip install "poetry==$POETRY_VERSION"
+RUN pip install "poetry==$POETRY_VERSION" --no-warn-script-location
 
 COPY pyproject.toml poetry.lock README.md LICENSE.txt ./
 
