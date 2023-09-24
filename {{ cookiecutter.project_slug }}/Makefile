@@ -110,12 +110,12 @@ clean:
 # TODO: properly tag
 .PHONY: docker_build
 docker_build: ## build the production docker container
-docker_build:
+docker_build: set_up_local_environment
 	docker build --target production .
 
 .PHONY: docker_test
 docker_test: ## run tests in docker
-docker_test:
+docker_test: set_up_local_environment
 	docker build --target test .
 
 
