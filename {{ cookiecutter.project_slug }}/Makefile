@@ -20,6 +20,7 @@ TEST_OUTPUT_DIR := test_output
 
 ##@ Help Targets
 
+.PHONY: help
 help: ## Print this help text
 help:
 	@awk 'BEGIN { \
@@ -40,6 +41,7 @@ $(PYENV_BIN):
 	@echo pyenv not installed at $(PYENV_BIN)
 	exit 1
 
+.PHONY: pyenv
 pyenv: ## NOT IMPLEMENTED - Install pyenv
 pyenv: $(PYENV_BIN)
 
@@ -47,6 +49,7 @@ $(PYENV_VENV_ROOT):
 	@echo pyenv-virtualenv not installed at $(PYENV_VENV_ROOT)
 	exit 1
 
+.PHONY: pyenv_virtualenv
 pyenv_virtualenv: ## NOT IMPLEMENTED Install pyenv-virtualenv
 pyenv_virtualenv: pyenv $(PYENV_VENV_ROOT)
 
@@ -54,12 +57,14 @@ $(PYENV_PYRIGHT_ROOT):
 	@echo pyenv-pyright not installed at $(PYENV_PYRIGHT_ROOT)
 	exit 1
 
+.PHONY: pyenv_pyright
 pyenv_pyright: ## NOT IMPLEMENTED Install pyenv-virtualenv
 pyenv_pyright: pyenv $(PYENV_PYRIGHT_ROOT)
 
 $(PYENV_VERSION_PATH):
 	pyenv install $(PYTHON_VERSION)
 
+.PHONY: install_python
 install_python: ## Install the project version of python using pyenv
 install_python: pyenv pyenv_virtualenv $(PYENV_VERSION_PATH)
 
@@ -67,6 +72,7 @@ install_python: pyenv pyenv_virtualenv $(PYENV_VERSION_PATH)
 	pyenv virtualenv $(PYTHON_VERSION) $(VENV_NAME) && \
 		pyenv local $(VENV_NAME)
 
+.PHONY: create_venv
 create_venv: ## Create venv with pyenv-virutalenv
 create_venv: install_python .python-version
 
@@ -74,22 +80,25 @@ create_venv: install_python .python-version
 poetry.lock:
 	poetry add black flakeheaven mypy --group dev
 
-
+.PHONY: add_base_dependencies
 add_base_dependencies: ## Add base project and dev dependencies 
 add_base_dependencies: create_venv poetry.lock
 
 pyrightconfig.json:
 	pyenv pyright $(VENV_NAME)
 
+.PHONY: link_pyright_to_venv
 link_pyright_to_venv: ## Create pyrightconfig.json linking pyright to the venv
 link_pyright_to_venv: pyenv_pyright pyrightconfig.json
 
+.PHONY: set_up_local_environment
 set_up_local_environment: ## Fully set up the local environment
 set_up_local_environment: create_venv add_base_dependencies link_pyright_to_venv
 	
 
 ##@ Clean Targets
 
+.PHONY: clean
 clean: ## Clear existing test reports
 clean:
 	@rm -rf $(TEST_OUTPUT_DIR)
@@ -99,10 +108,12 @@ clean:
 ##@ Docker Targets
 
 # TODO: properly tag
+.PHONY: docker_build
 docker_build: ## build the production docker container
 docker_build:
 	docker build --target production .
 
+.PHONY: docker_test
 docker_test: ## run tests in docker
 docker_test:
 	docker build --target test .
@@ -110,6 +121,7 @@ docker_test:
 
 ##@ Run Targets
 
+.PHONY: run
 run: ## Run the project
 run: set_up_local_environment
 	$(POETRY) run python {{ cookiecutter.project_slug }}/main.py
@@ -118,6 +130,7 @@ run: set_up_local_environment
 ##@ Test Targets
 
 # TODO: add set_up_local_environment as a dependency after that won't break CI
+.PHONY: test
 test: ## Run automated tests
 test: clean
 	$(POETRY) run pytest
@@ -126,28 +139,34 @@ test: clean
 ##@ Linting Targets
 
 ARGS ?= .
+.PHONY: black
 black: ## Auto-format code with black
 black: set_up_local_environment
 	$(POETRY) run black $(ARGS)
 
+.PHONY: black_check_only
 black_check_only: ## Used by CI. Check if auto-formatter would make changes and fail if so
 black_check_only:
 	$(POETRY) run black --check .
 
 # TODO: add set_up_local_environment as a dependency after that won't break CI
+.PHONY: flake
 flake: ## Run the flakeheaven linter, which is a pyproject.toml compatible wrapper for flake8
 flake:
 	$(POETRY) run flakeheaven lint
 
 # TODO: add set_up_local_environment as a dependency after that won't break CI
+.PHONY: mypy
 mypy: ## Check type hints with mypy
 mypy:
 	$(POETRY) run mypy .
 
 
+.PHONY: lint
 lint: ## Run all linting and auto-formatting
 lint: black flake mypy
 
+.PHONY: lint_check_only
 lint_check_only: ## Used by CI. Run all linting and formatting checks without making any changes
 lint_check_only: black_check_only flake mypy
 
@@ -183,12 +202,14 @@ CI_VENV_ACTIVATE_MACRO ?= . $(CI_PYENV_VENV_ACTIVATE_PATH)
 $(CI_PYENV_ROOT):
 	git clone https://github.com/pyenv/pyenv.git $(CI_PYENV_ROOT)
 
+.PHONY: ci_pyenv
 ci_pyenv: ## Install pyenv in the CI environment
 ci_pyenv: $(CI_PYENV_ROOT)
 
 $(CI_PYENV_PLUGINS)/pyenv-virtualenv:
 	git clone https://github.com/pyenv/pyenv-virtualenv.git $(PYENV_PLUGINS)/pyenv-virtualenv
 
+.PHONY: ci_pyenv_virtualenv
 ci_pyenv_virtualenv: ## Install pyenv-virtualenv in the CI environment
 ci_pyenv_virtualenv: ci_pyenv $(CI_PYENV_PLUGINS)/pyenv-virtualenv
 
@@ -197,12 +218,14 @@ $(CI_PYENV_VERSION_PATH):
 	$(CI_PYENV_SETUP_MACRO) && \
 	pyenv install $(PYTHON_VERSION)
 
+.PHONY: ci_install_python
 ci_install_python: ## Install the project version of python using pyenv in the CI environment
 ci_install_python: ci_pyenv_virtualenv $(CI_PYENV_VERSION_PATH)
 
 # Call commands to create .python-version directly instead of making a separate target.
 # This avoids interfering with the local environment .python-version recipe.
 # It's fine for now because we know this will only be called once during CI env setup.
+.PHONY: ci_create_venv
 ci_create_venv: ## Create venv with pyenv-virutalenv in the CI environment
 ci_create_venv: ci_install_python 
 	$(CI_PYENV_VENV_SETUP_MACRO) && \
@@ -220,48 +243,23 @@ $(CI_POETRY_BIN):
 		echo "setting poetry to not create venvs" && \
 		poetry config virtualenvs.create false
 
+.PHONY: ci_install_poetry
 ci_install_poetry: ## Install poetry in the CI environment
 ci_install_poetry: $(CI_POETRY_BIN)
 
+.PHONY: ci_env_setup
 ci_env_setup: ## Install pyenv, python version, and poetry
 ci_env_setup: ci_create_venv ci_install_poetry
 	$(POETRY_PATH_MACRO) && \
 	$(VENV_ACTIVATE_MACRO) && \
 	poetry install --with dev
 
+.PHONY: ci_lint
 ci_lint: ## Call check-only linting checks in the CI environment
 ci_lint: POETRY=$(VENV_ACTIVATE_MACRO) && $(CI_POETRY_BIN)
 ci_lint: lint_check_only
 
+.PHONY: ci_test
 ci_test: ## Run tests in the CI environment
 ci_test: POETRY=$(VENV_ACTIVATE_MACRO) && $(CI_POETRY_BIN)
 ci_test: test
-
-
-.PHONY: help \
-	pyenv \
-	pyenv_virtualenv \
-	pyenv_pyright \
-	install_python \
-	create_venv \
-	add_base_dependencies \
-	link_pyright_to_venv \
-	set_up_local_environment \
-	clean \
-	docker_build \
-	docker_test \
-	run \
-	black \
-	black_check_only \
-	flake \
-	mypy \
-	lint \
-	lint_check_only \
-	ci_pyenv \
-	ci_install_python \
-	ci_create_venv \
-	ci_activate_venv \
-	ci_install_poetry \
-	ci_env_setup \
-	ci_lint \
-	ci_test
