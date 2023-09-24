@@ -65,11 +65,18 @@ install_python: pyenv pyenv_virtualenv $(PYENV_VERSION_PATH)
 
 .python-version:
 	pyenv virtualenv $(PYTHON_VERSION) $(VENV_NAME) && \
-		pyenv local $(VENV_NAME) && \
-		poetry lock
+		pyenv local $(VENV_NAME)
 
-create_venv: ## Create venv with pyenv-virutalenv in the CI environment
+create_venv: ## Create venv with pyenv-virutalenv
 create_venv: install_python .python-version
+
+# TODO: store the list of base dependencies elsewhere
+poetry.lock:
+	poetry add black flakeheaven mypy --group dev
+
+
+add_base_dependencies: ## Add base project and dev dependencies 
+add_base_dependencies: create_venv poetry.lock
 
 pyrightconfig.json:
 	pyenv pyright $(VENV_NAME)
@@ -78,7 +85,7 @@ link_pyright_to_venv: ## Create pyrightconfig.json linking pyright to the venv
 link_pyright_to_venv: pyenv_pyright pyrightconfig.json
 
 set_up_local_environment: ## Fully set up the local environment
-set_up_local_environment: create_venv link_pyright_to_venv
+set_up_local_environment: create_venv add_base_dependencies link_pyright_to_venv
 	
 
 ##@ Clean Targets
@@ -237,6 +244,7 @@ ci_test: test
 	pyenv_pyright \
 	install_python \
 	create_venv \
+	add_base_dependencies \
 	link_pyright_to_venv \
 	set_up_local_environment \
 	clean \
