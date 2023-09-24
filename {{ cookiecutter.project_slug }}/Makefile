@@ -57,11 +57,11 @@ $(PYENV_PYRIGHT_ROOT):
 pyenv_pyright: ## NOT IMPLEMENTED Install pyenv-virtualenv
 pyenv_pyright: pyenv $(PYENV_PYRIGHT_ROOT)
 
-$(PYENV_VERSION_PATH): pyenv pyenv_virtualenv
+$(PYENV_VERSION_PATH):
 	pyenv install $(PYTHON_VERSION)
 
 install_python: ## Install the project version of python using pyenv
-install_python: $(PYENV_VERSION_PATH)
+install_python: pyenv pyenv_virtualenv $(PYENV_VERSION_PATH)
 
 .python-version: install_python
 	pyenv virtualenv $(PYTHON_VERSION) $(VENV_NAME) && \
@@ -117,9 +117,10 @@ test: clean
 
 ##@ Linting Targets
 
+ARGS ?= .
 black: ## Auto-format code with black
 black: set_up_local_environment
-	$(POETRY) run black .
+	$(POETRY) run black $(ARGS)
 
 black_check_only: ## Used by CI. Check if auto-formatter would make changes and fail if so
 black_check_only:
