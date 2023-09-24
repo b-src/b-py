@@ -63,16 +63,16 @@ $(PYENV_VERSION_PATH):
 install_python: ## Install the project version of python using pyenv
 install_python: pyenv pyenv_virtualenv $(PYENV_VERSION_PATH)
 
-.python-version: install_python
+.python-version:
 	pyenv virtualenv $(PYTHON_VERSION) $(VENV_NAME) && \
 		pyenv local $(VENV_NAME) && \
 		poetry lock
 
 create_venv: ## Create venv with pyenv-virutalenv in the CI environment
-create_venv: .python-version
+create_venv: install_python .python-version
 
 pyrightconfig.json:
-	pyenv pyright $(PYTHON_VERSION)
+	pyenv pyright $(VENV_NAME)
 
 link_pyright_to_venv: ## Create pyrightconfig.json linking pyright to the venv
 link_pyright_to_venv: pyenv_pyright pyrightconfig.json
