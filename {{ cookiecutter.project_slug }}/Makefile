@@ -42,7 +42,7 @@ $(PYENV_BIN):
 	exit 1
 
 .PHONY: pyenv
-pyenv: ## NOT IMPLEMENTED - Install pyenv
+pyenv: ## NOT IMPLEMENTED - Install pyenv. For now just checks that pyenv is already installed
 pyenv: $(PYENV_BIN)
 
 $(PYENV_VENV_ROOT):
@@ -50,7 +50,7 @@ $(PYENV_VENV_ROOT):
 	exit 1
 
 .PHONY: pyenv_virtualenv
-pyenv_virtualenv: ## NOT IMPLEMENTED Install pyenv-virtualenv
+pyenv_virtualenv: ## NOT IMPLEMENTED Install pyenv-virtualenv. For now just checks that pyenv-virtualenv is already installed
 pyenv_virtualenv: pyenv $(PYENV_VENV_ROOT)
 
 $(PYENV_PYRIGHT_ROOT):
@@ -58,7 +58,7 @@ $(PYENV_PYRIGHT_ROOT):
 	exit 1
 
 .PHONY: pyenv_pyright
-pyenv_pyright: ## NOT IMPLEMENTED Install pyenv-virtualenv
+pyenv_pyright: ## NOT IMPLEMENTED Install pyenv-pyright. For now just checks that pyenv-pyright is already installed
 pyenv_pyright: pyenv $(PYENV_PYRIGHT_ROOT)
 
 $(PYENV_VERSION_PATH):
