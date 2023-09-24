@@ -77,8 +77,10 @@ create_venv: ## Create venv with pyenv-virutalenv
 create_venv: install_python .python-version
 
 # TODO: store the list of base dependencies elsewhere
+# TODO: poetry install should not be necessary here but it seems like it is sometimes
 poetry.lock:
-	poetry add black bump2version flakeheaven mypy --group dev
+	$(POETRY) add black bump2version flakeheaven mypy --group dev && \
+		$(POETRY) install
 
 .PHONY: add_base_dependencies
 add_base_dependencies: ## Add base project and dev dependencies 
@@ -175,17 +177,17 @@ lint_check_only: black_check_only flake mypy
 
 .PHONY: bump
 bump: ## Bump version using bump2version
-bump:
-	read -n 1 -p "Major [M], minor [m], or patch [p]? [M/m/p]" part && \
+bump: set_up_local_environment
+	@read -n 1 -p "Major [M], minor [m], or patch [p]? [M/m/p]" part && \
 		case $${part} in \
 			M ) \
-				bump2version major \
+				$(POETRY) run bump2version major \
 			;; \
 			m ) \
-				bump2version minor \
+				$(POETRY) run bump2version minor \
 			;; \
 			p ) \
-				bump2version patch \
+				$(POETRY) run bump2version patch \
 			;; \
 		esac
 
