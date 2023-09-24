@@ -78,7 +78,7 @@ create_venv: install_python .python-version
 
 # TODO: store the list of base dependencies elsewhere
 poetry.lock:
-	poetry add black flakeheaven mypy --group dev
+	poetry add black bump2version flakeheaven mypy --group dev
 
 .PHONY: add_base_dependencies
 add_base_dependencies: ## Add base project and dev dependencies 
@@ -170,6 +170,24 @@ lint: black flake mypy
 lint_check_only: ## Used by CI. Run all linting and formatting checks without making any changes
 lint_check_only: black_check_only flake mypy
 
+
+##@ Versioning Targets
+
+.PHONY: bump
+bump: ## Bump version using bump2version
+bump:
+	read -n 1 -p "Major [M], minor [m], or patch [p]? [M/m/p]" part && \
+		case $${part} in \
+			M ) \
+				bump2version major \
+			;; \
+			m ) \
+				bump2version minor \
+			;; \
+			p ) \
+				bump2version patch \
+			;; \
+		esac
 
 ##@ CI Environment Targets
 # There is a lot of overlap between these and local environment targets.
