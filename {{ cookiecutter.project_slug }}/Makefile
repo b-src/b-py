@@ -98,7 +98,7 @@ docker_build:
 
 docker_test: ## run tests in docker
 docker_test:
-	docker build --target tests .
+	docker build --target test .
 
 
 ##@ Run Targets
