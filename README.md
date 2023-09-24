@@ -64,6 +64,13 @@ after this you will be prompted for the project variables stored in `cookiecutte
  $ cruft diff
 ```
 
+## Troubleshooting
+
+`manifest unknown` error when running `$ make docker_build`:
+
+the base docker image is set to use debian bookworm, which is only available for very recent python versions (>=3.11.5?) at the time I'm writing this. depending on the age of the python version you are using you may have to set the base image to use debian bullseye or buster instead of bookworm.
+
+
 ## Contributing
 
 this template represents the way I like to develop. changes will only be merged in if they align with my workflow and support my existing projects that rely on this template.
@@ -71,8 +78,6 @@ this template represents the way I like to develop. changes will only be merged 
 ## Roadmap
 
  - allow license to be selectable, including an option for no license for private projects
- - update makefile template to set up local environment
- - update makefile template to set up initial dev dependencies
  - consider adding import sorts with isort
  - consider adding version management with bump2version
  - pin version of poetry within the project, refactor poetry commands to use project specific poetry instead of system poetry
