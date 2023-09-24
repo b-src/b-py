@@ -65,7 +65,8 @@ install_python: pyenv pyenv_virtualenv $(PYENV_VERSION_PATH)
 
 .python-version: install_python
 	pyenv virtualenv $(PYTHON_VERSION) $(VENV_NAME) && \
-		pyenv local $(VENV_NAME)
+		pyenv local $(VENV_NAME) && \
+		poetry lock
 
 create_venv: ## Create venv with pyenv-virutalenv in the CI environment
 create_venv: .python-version
