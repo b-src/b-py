@@ -17,6 +17,7 @@ for a more in-depth breakdown of why certain choices were made, see here[https:/
  - poetry for dependency management
  - auto-formatting with black
  - linting with flakeheaven (a pyproject.toml-compatible fork of flake8)
+ - easy version management with bump2version
  - type hint checking with mypy
  - a CI pipeline configuration for github actions that:
    + runs formatting and linting checks
@@ -79,7 +80,6 @@ this template represents the way I like to develop. changes will only be merged 
 
  - allow license to be selectable, including an option for no license for private projects
  - consider adding import sorts with isort
- - consider adding version management with bump2version
  - pin version of poetry within the project, refactor poetry commands to use project specific poetry instead of system poetry
  - update dockerfile to make testing easier
  - improve CI pipeline

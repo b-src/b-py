@@ -14,6 +14,7 @@ Basic project outline, including:
    + run the project
    + run the automated tests
    + run linting and auto-formatting
+   + bump version with bump2version
  - github actions CI definition to run linting and tests
  - Dockerfile
  - README
