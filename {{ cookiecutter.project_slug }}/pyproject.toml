@@ -58,6 +58,10 @@ exclude = [
     "tests/",
 ]
 
+[tool.isort]
+profile = "black"
+# TODO: known third party?
+
 
 [tool.pytest.ini_options]
 addopts = "--junit-xml='test_output/test_report.xml'"
