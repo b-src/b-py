@@ -79,7 +79,7 @@ create_venv: install_python .python-version
 # TODO: store the list of base dependencies elsewhere
 # TODO: poetry install should not be necessary here but it seems like it is sometimes
 poetry.lock:
-	$(POETRY) add black bump2version flakeheaven mypy --group dev && \
+	$(POETRY) add black bump2version flakeheaven isort mypy --group dev && \
 		$(POETRY) install
 
 .PHONY: add_base_dependencies
@@ -160,14 +160,25 @@ mypy: ## Check type hints with mypy
 mypy: set_up_local_environment
 	$(POETRY) run mypy .
 
+.PHONY: isort
+isort: ## sort imports with isort
+isort:
+	$(POETRY) run isort .
+
+
+.PHONY: isort_check_only
+isort_check_only: ## sort imports with isort
+isort_check_only:
+	$(POETRY) run isort --check-only .
+
 
 .PHONY: lint
 lint: ## Run all linting and auto-formatting
-lint: black flake mypy
+lint: black isort flake mypy
 
 .PHONY: lint_check_only
 lint_check_only: ## Used by CI. Run all linting and formatting checks without making any changes
-lint_check_only: black_check_only flake mypy
+lint_check_only: black_check_only isort_check_only flake mypy
 
 
 ##@ Versioning Targets
