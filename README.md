@@ -79,7 +79,6 @@ this template represents the way I like to develop. changes will only be merged 
 ## Roadmap
 
  - allow license to be selectable, including an option for no license for private projects
- - consider adding import sorts with isort
  - pin version of poetry within the project, refactor poetry commands to use project specific poetry instead of system poetry
  - update dockerfile to make testing easier
  - improve CI pipeline
