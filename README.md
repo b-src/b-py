@@ -17,8 +17,9 @@ for a more in-depth breakdown of why certain choices were made, see here[https:/
  - poetry for dependency management
  - auto-formatting with black
  - linting with flakeheaven (a pyproject.toml-compatible fork of flake8)
- - easy version management with bump2version
  - type hint checking with mypy
+ - automatic import sorting with isort
+ - easy version management with bump2version
  - a CI pipeline configuration for github actions that:
    + runs formatting and linting checks
    + runs the automated test suite
@@ -72,10 +73,6 @@ after this you will be prompted for the project variables stored in `cookiecutte
 the base docker image is set to use debian bookworm, which is only available for very recent python versions (>=3.11.5?) at the time I'm writing this. depending on the age of the python version you are using you may have to set the base image to use debian bullseye or buster instead of bookworm.
 
 
-## Contributing
-
-this template represents the way I like to develop. changes will only be merged in if they align with my workflow and support my existing projects that rely on this template.
-
 ## Roadmap
 
  - allow license to be selectable, including an option for no license for private projects
@@ -83,7 +80,6 @@ this template represents the way I like to develop. changes will only be merged 
  - update dockerfile to make testing easier
  - improve CI pipeline
    + add static analysis/credential/dependency vulnerability scan
-   + make environment setup modular so jobs can be broken up without having to run expensive setup multiple times
    + longer term - support automated deployment
 
 ## License
