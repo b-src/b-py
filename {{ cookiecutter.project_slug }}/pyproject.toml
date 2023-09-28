@@ -59,8 +59,10 @@ exclude = [
 ]
 
 [tool.isort]
+py_version = # TODO: get this from cookiecutter.json
 profile = "black"
-# TODO: known third party?
+line_length = "120"
+# TODO: known first party?
 
 
 [tool.pytest.ini_options]
