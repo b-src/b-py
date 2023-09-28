@@ -7,8 +7,7 @@ on:
   pull_request:
 
 jobs:
-  lint:
-    name: Lint and test
+  setup:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -32,8 +31,18 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: python -m poetry install
+
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
       - name: Lint
         run: make ci_lint
+
+  test:
+    needs: [setup, lint]
+    runs-on: ubuntu-latest
+    steps:
       - name: Test
         run: make test
 
