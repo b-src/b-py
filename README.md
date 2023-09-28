@@ -81,6 +81,8 @@ the base docker image is set to use debian bookworm, which is only available for
  - improve CI pipeline
    + add static analysis/credential/dependency vulnerability scan
    + longer term - support automated deployment
+ - precommit hooks to run linting
+ - add test coverage to CI
 
 ## License
 
