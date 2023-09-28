@@ -46,3 +46,10 @@ jobs:
       - name: Test
         run: make test
 
+  build:
+    needs: [setup, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build
+        run: make docker_build
+
