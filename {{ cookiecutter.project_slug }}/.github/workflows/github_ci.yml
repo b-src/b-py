@@ -19,7 +19,7 @@ jobs:
       - uses: actions/cache@v3
         id: cache
         with:
-          path: ${{ env.pythonLocation }}
+          path: {{ '${{ env.pythonLocation }}' }}
           key: ${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
       - name: Install poetry
         if: steps.cache.outputs.cache-hit != 'true'
