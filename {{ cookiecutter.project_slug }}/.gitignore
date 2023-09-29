@@ -4,6 +4,7 @@ dist/
 # pycache
 **/__pycache__/**
 
+.flakeheaven_cache
 .mypy_cache
 .pytest_cache
 
