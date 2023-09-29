@@ -20,7 +20,7 @@ jobs:
         id: cache
         with:
           path: {{ '${{ env.pythonLocation }}' }}
-          key: ${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
+          key: {{ '${{ runner.os }}-${{ hashFiles("pyproject.toml") }}' }}
       - name: Install poetry
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
