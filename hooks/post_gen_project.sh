@@ -1,3 +1,5 @@
 #!/bin/bash -eu
 
-git init
+if ! [[ -d .git ]]; then
+	git init
+fi
