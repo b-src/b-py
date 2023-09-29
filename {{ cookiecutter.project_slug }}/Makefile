@@ -79,7 +79,7 @@ create_venv: install_python .python-version
 # TODO: store the list of base dependencies elsewhere
 # TODO: poetry install should not be necessary here but it seems like it is sometimes
 poetry.lock:
-	$(POETRY) add black bump2version flakeheaven isort mypy --group dev && \
+	$(POETRY) add black bump2version cruft flakeheaven isort mypy --group dev && \
 		$(POETRY) install
 
 .PHONY: add_base_dependencies
