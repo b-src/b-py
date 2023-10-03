@@ -4,13 +4,13 @@ version = "{{ cookiecutter.project_version }}"
 description = "{{ cookiecutter.project_description }}"
 authors = ["{{ cookiecutter.author }} <{{ cookiecutter.author_email }}>"]
 classifiers = [
-    "Programming Language :: Python :: {{ cookiecutter.python_version.split('.')[0] }}",
-    "Programming Language :: Python :: {{ cookiecutter.python_version[:cookiecutter.python_version.rfind('.')] }}",
-    "Programming Language :: Python :: {{ cookiecutter.python_version.split('.')[0] }} :: Only",
+    "Programming Language :: Python :: {{ cookiecutter.__python_version_major }}",
+    "Programming Language :: Python :: {{ cookiecutter.__python_version_minor }}",
+    "Programming Language :: Python :: {{ cookiecutter.__python_version_major }} :: Only",
 ]
 
 [tool.poetry.dependencies]
-python = "^{{ cookiecutter.python_version[:cookiecutter.python_version.rfind('.')] }}"
+python = "^{{ cookiecutter.__python_version_minor }}"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -59,7 +59,7 @@ exclude = [
 ]
 
 [tool.isort]
-py_version = "${{ cookiecutter.python_version_extra_short }}"
+py_version = "${{ cookiecutter.__python_version_short }}"
 profile = "black"
 line_length = "120"
 # TODO: known first party?
