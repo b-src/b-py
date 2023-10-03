@@ -59,7 +59,7 @@ exclude = [
 ]
 
 [tool.isort]
-py_version = "${{ cookiecutter.__python_version_short }}"
+py_version = "{{ cookiecutter.__python_version_short }}"
 profile = "black"
 line_length = "120"
 # TODO: known first party?
