@@ -2,7 +2,7 @@
 	"python_version": "3.11.5",
 	"__python_version_major": "{{ cookiecutter.python_version.split('.')[0] }}",
 	"__python_version_minor":  "{{ cookiecutter.python_version.split('.')[:-1]|join('.') }}",
-	"__python_version_short": "{{ cookiecutter.python_version_short.replace('.', '') }}",
+	"__python_version_short": "{{ cookiecutter.__python_version_minor.replace('.', '') }}",
 	"author": "Joe Hamburger",
 	"author_email": "jburgs@example.com",
 	"project_name": "",
