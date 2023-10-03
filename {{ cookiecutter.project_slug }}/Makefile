@@ -1,4 +1,4 @@
-PROJECT_NAME := {{ cookiecutter.project_slug }}
+PROJECT_NAME := {{ cookiecutter.__project_slug }}
 PYTHON_VERSION := {{ cookiecutter.python_version }}
 
 VENV_NAME ?= $(PROJECT_NAME)-$(PYTHON_VERSION)
@@ -126,7 +126,7 @@ docker_test: set_up_local_environment
 .PHONY: run
 run: ## Run the project
 run: set_up_local_environment
-	$(POETRY) run python {{ cookiecutter.project_slug }}/main.py
+	$(POETRY) run python {{ cookiecutter.__package_name }}/main.py
 
 
 ##@ Test Targets

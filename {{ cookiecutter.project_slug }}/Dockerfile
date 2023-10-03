@@ -36,7 +36,7 @@ COPY --from=build /home/appuser/app/dev_requirements.txt .
 RUN pip install --force-reinstall -r dev_requirements.txt
 
 COPY Makefile Makefile
-COPY {{ cookiecutter.project_slug }} {{ cookiecutter.project_slug }}
+COPY {{ cookiecutter.__package_name }} {{ cookiecutter.__package_name }}
 COPY tests tests
 
 CMD ["make", "test"]
@@ -49,6 +49,6 @@ COPY --from=build /home/appuser/app/requirements.txt .
 RUN pip install --force-reinstall -r requirements.txt
 
 COPY entrypoint.sh .
-COPY {{ cookiecutter.project_slug }} {{ cookiecutter.project_slug }}
+COPY {{ cookiecutter.__package_name }} {{ cookiecutter.__package_name }}
 
 ENTRYPOINT ["/bin/bash", "entrypoint.sh"]
