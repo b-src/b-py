@@ -22,23 +22,25 @@ build-backend = "poetry.core.masonry.api"
 [tool.black]
 line-length = 120
 
-[tool.flakeheaven]
-max_line_length = 120
-format = "grouped"
-show_source = true
+[tool.ruff]
+line-length = 120
+target-version = "py{{ cookiecutter.__python_version_short }}"
 
-[tool.flakeheaven.plugins]
-# E203 required to maintain compatibility with black
-# W503 is a linebreak before binary operators. flake8 also has W504, linebreak *after*
-# binary operators. PEP-8 recommends linebreaks before binary operators to keep all
-# operators aligned. this config respects W504 and ignores W503
-pycodestyle = [
-    "+*",
-    "-E203",
-    "-W503",
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    "W",
+    # pyflakes
+    "F",
 ]
-pyflakes = [
-    "+*",
+
+ignore = [
+    # pycodestyle
+    # E203 required to maintain compatibility with black
+    "E203",
+    # W503 is a linebreak before binary operators. flake8 also has W504, linebreak *after*
+    "W503",
 ]
 
 [tool.mypy]
