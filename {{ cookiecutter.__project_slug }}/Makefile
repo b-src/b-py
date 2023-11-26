@@ -151,7 +151,12 @@ black_check_only:
 	$(POETRY) run black --check .
 
 .PHONY: ruff
-ruff: ## Run the ruff linter
+ruff: ## Run the ruff linter and automatically fix issues where possible
+ruff: set_up_local_environment
+	$(POETRY) run ruff check . --fix
+
+.PHONY: ruff_check_only
+ruff: ## Used by CI. Check if ruff linter would make changes and fail if so
 ruff: set_up_local_environment
 	$(POETRY) run ruff check .
 
@@ -167,7 +172,7 @@ isort:
 
 
 .PHONY: isort_check_only
-isort_check_only: ## sort imports with isort
+isort_check_only: ## Used by CI. Check if isort would make changes and fail if so.
 isort_check_only:
 	$(POETRY) run isort --check-only .
 
@@ -178,7 +183,7 @@ lint: black isort ruff mypy
 
 .PHONY: lint_check_only
 lint_check_only: ## Used by CI. Run all linting and formatting checks without making any changes
-lint_check_only: black_check_only isort_check_only ruff mypy
+lint_check_only: black_check_only isort_check_only ruff_check_only mypy
 
 
 ##@ Versioning Targets
