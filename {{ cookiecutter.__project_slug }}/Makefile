@@ -79,7 +79,7 @@ create_venv: install_python .python-version
 # TODO: store the list of base dependencies elsewhere
 # TODO: poetry install should not be necessary here but it seems like it is sometimes
 poetry.lock:
-	$(POETRY) add black bump2version cruft isort mypy ruff --group dev && \
+	$(POETRY) add bump2version cruft isort mypy ruff --group dev && \
 		$(POETRY) install
 
 .PHONY: add_base_dependencies
@@ -140,15 +140,15 @@ test: clean set_up_local_environment
 ##@ Linting Targets
 
 ARGS ?= .
-.PHONY: black
-black: ## Auto-format code with black
-black: set_up_local_environment
-	$(POETRY) run black $(ARGS)
+.PHONY: format
+format: ## Auto-format code with ruff
+format: set_up_local_environment
+	$(POETRY) run ruff format . $(ARGS)
 
-.PHONY: black_check_only
-black_check_only: ## Used by CI. Check if auto-formatter would make changes and fail if so
-black_check_only:
-	$(POETRY) run black --check .
+.PHONY: format_check_only
+format_check_only: ## Used by CI. Check if auto-formatter would make changes and fail if so
+format_check_only:
+	$(POETRY) run ruff format --check .
 
 .PHONY: ruff
 ruff: ## Run the ruff linter and automatically fix issues where possible
@@ -179,11 +179,11 @@ isort_check_only:
 
 .PHONY: lint
 lint: ## Run all linting and auto-formatting
-lint: black isort ruff mypy
+lint: format isort ruff mypy
 
 .PHONY: lint_check_only
 lint_check_only: ## Used by CI. Run all linting and formatting checks without making any changes
-lint_check_only: black_check_only isort_check_only ruff_check_only mypy
+lint_check_only: format_check_only isort_check_only ruff_check_only mypy
 
 
 ##@ Versioning Targets
