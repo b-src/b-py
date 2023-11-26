@@ -30,6 +30,8 @@ select = [
     "W",
     # pyflakes
     "F",
+    # isort
+    "I",
 ]
 
 ignore = [

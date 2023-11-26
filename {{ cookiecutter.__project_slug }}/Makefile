@@ -79,7 +79,7 @@ create_venv: install_python .python-version
 # TODO: store the list of base dependencies elsewhere
 # TODO: poetry install should not be necessary here but it seems like it is sometimes
 poetry.lock:
-	$(POETRY) add bump2version cruft isort mypy ruff --group dev && \
+	$(POETRY) add bump2version cruft mypy ruff --group dev && \
 		$(POETRY) install
 
 .PHONY: add_base_dependencies
@@ -165,25 +165,13 @@ mypy: ## Check type hints with mypy
 mypy: set_up_local_environment
 	$(POETRY) run mypy .
 
-.PHONY: isort
-isort: ## sort imports with isort
-isort:
-	$(POETRY) run isort .
-
-
-.PHONY: isort_check_only
-isort_check_only: ## Used by CI. Check if isort would make changes and fail if so.
-isort_check_only:
-	$(POETRY) run isort --check-only .
-
-
 .PHONY: lint
 lint: ## Run all linting and auto-formatting
-lint: format isort ruff mypy
+lint: format ruff mypy
 
 .PHONY: lint_check_only
 lint_check_only: ## Used by CI. Run all linting and formatting checks without making any changes
-lint_check_only: format_check_only isort_check_only ruff_check_only mypy
+lint_check_only: format_check_only ruff_check_only mypy
 
 
 ##@ Versioning Targets
