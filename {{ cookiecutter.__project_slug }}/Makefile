@@ -156,8 +156,8 @@ ruff: set_up_local_environment
 	$(POETRY) run ruff check . --fix
 
 .PHONY: ruff_check_only
-ruff: ## Used by CI. Check if ruff linter would make changes and fail if so
-ruff: set_up_local_environment
+ruff_check_only: ## Used by CI. Check if ruff linter would make changes and fail if so
+ruff_check_only: set_up_local_environment
 	$(POETRY) run ruff check .
 
 .PHONY: mypy
